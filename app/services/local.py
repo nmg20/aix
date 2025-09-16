@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from typing import List, Optional
-from mutagen._file import File
+from mutagen import File
 from mutagen.flac import FLAC
 from mutagen.wave import WAVE
 from mutagen.mp3 import MP3

@@ -5,37 +5,52 @@ from pydantic import BaseModel
 
 from enum import Enum
 
-class User(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    username: str
-    password: str
+# class User(SQLModel, table=True):
+#     id: Optional[int] = Field(default=None, primary_key=True)
+#     username: str
+#     password: str
 
-    playlists: list["Playlist"] = Relationship(back_populates="author")
+#     playlists: list["Playlist"] = Relationship(back_populates="author")
+
+# class Playlist(SQLModel, table=True):
+#     id: Optional[int] = Field(default=None, primary_key=True)
+#     name: str
+#     url: str
+#     songs: List["Song"] = Relationship(back_populates="playlist")
+
+# class Artist(SQLModel, table=True):
+#     id: Optional[int] = Field(default=None, primary_key=True)
+#     name: str
+#     albums: List["Album"] = Relationship(back_populates="artist")
+#     songs: List["Song"] = Relationship(back_populates="artist")
+
+# class Album(SQLModel, table=True):
+#     id: Optional[int] = Field(default=None, primary_key=True)
+#     title: str
+#     artist_id: Optional[int] = Field(default=None, foreign_key="artist.id")
+#     released: Optional[datetime] = None
+#     artist: Optional[Artist] = Relationship(back_populates="albums")
+#     songs: List["Song"] = Relationship(back_populates="album")
 
 class Playlist(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    created: datetime = Field(default_factory=datetime.now)
-    
-    author_id: int = Field(foreign_key="user.id")
-    author: Optional[User] = Relationship(back_populates="playlists")
-
-class Artist(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-
-class Album(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    title: str
-    artist_id: int = Field(foreign_key="artist.id")
-    released: datetime
+    url: str
+    created: Optional[datetime] = Field(default_factory=datetime.now)
 
 class Song(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
-    artist_id: int = Field(foreign_key="artist.id")
-    album_id: int = Field(foreign_key="album.id")
-    duration: float
+    artist: Optional[str] = None
+    album: Optional[str] = None
+    url: str
+    downloaded: bool = False
+    file_path: Optional[str] = None
+
+
+
+
+
 
 class SongInfo(BaseModel):
     path: str
