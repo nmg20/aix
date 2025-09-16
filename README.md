@@ -148,3 +148,11 @@ class Playlist(SQLModel, table=True):
 3. Añadir `routers/sync.py` con endpoint POST `/sync`.
 4. Probar análisis superficial con `mutagen`.
 5. Planificar integración con Celery/RQ.
+
+
+
+# .\.venv\Scripts\activate
+# uvicorn app.main:app
+
+# Working: "curl --location '/playlists/parse?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DW-UepwIyHfc%26list%3DPLR-pSqh8ddm3FQM_eMiCfXqTwDK8qLRMt%26pp%3DgAQB'"
+# Not working: "curl --location 'http://127.0.0.1:8000/playlists/parse?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DW-UepwIyHfc%26list%3DPLR-pSqh8ddm3FQM_eMiCfXqTwDK8qLRMt%26pp%3DgAQB'"
