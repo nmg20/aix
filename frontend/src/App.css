@@ -1,0 +1,97 @@
+/* Hace que toda la app ocupe toda la pantalla y se centre */
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centra vertical */
+  align-items: center;     /* centra horizontal */
+  min-height: 100vh;       /* ocupa toda la altura de la ventana */
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Título */
+.app h1 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+/* Formulario */
+form {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+form input[type="text"] {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+form button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+form button:hover {
+  background-color: #222;
+}
+
+/* Lista de canciones */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Cada canción */
+.song-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: #eee;
+  border-radius: 6px;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.song-item:nth-child(even) {
+  background: #ddd; /* alterna escala de grises */
+}
+
+.song-item:hover {
+  background: #ccc;
+}
+
+/* Botón dentro de cada canción */
+.song-item button {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #666;
+  color: white;
+  cursor: pointer;
+}
+
+.song-item button:hover {
+  background-color: #444;
+}

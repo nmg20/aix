@@ -1,158 +1,119 @@
-# Aix – Music Manager con FastAPI
+# Aix – Gestor de Playlists
 
-## Resumen general
+Este proyecto permite procesar playlists de YouTube para obtener las canciones y descargar las seleccionadas en formato ZIP.  
+Consta de dos partes:  
+- Backend: API REST en FastAPI.  
+- Frontend: Interfaz en React (Vite) que consume la API y muestra las canciones.  
 
-**Nombre provisional:** Aix  
-**Objetivo principal:**
-- Gestionar playlists locales (carpetas en disco, incluidas unidades externas como USBs).
-- Integrar extracción de información y descarga masiva desde servicios externos como SoundCloud, Spotify, etc.
-- Permitir mover canciones entre playlists con opción de revertir cambios.
-- Consultar playlists y canciones vía API.
-
-**Arquitectura actual:**
-- **Backend:** FastAPI + SQLModel (SQLite como base inicial).
-- **Frontend:** React + Vite (previsto para futuro, no prioritario ahora).
-- **Persistencia:** SQLite con SQLModel y migraciones manuales.
-- **Autenticación:** Basada en lógica heredada de Flask, pendiente de migrar a FastAPI.
-- **Ejecución:**  
-  ```bash
-  fastapi dev app/main.py
-  ```
-
----
-
-## Estructura de carpetas
+## Estructura del proyecto
 
 ```
 aix/
 │
-├── app/
-│   ├── __init__.py
-│   ├── main.py              # Punto de entrada
-│   ├── db.py                # Configuración BD
-│   ├── models.py            # Entidades SQLModel/Pydantic
-│   ├── routers/             # Endpoints por módulo
-│   │   ├── __init__.py
-│   │   ├── playlist.py
-│   │   ├── song.py          # Pendiente
-│   │   ├── auth.py          # Pendiente
-│   ├── services/            # Lógica de negocio
-│   │   ├── __init__.py
-│   │   ├── local_playlists.py
-│   │   ├── soundcloud.py    # Pendiente
-│   │   ├── spotify.py       # Pendiente
+├── backend/
+│   ├── app/
+│   │   ├── main.py          # Entrada de la API FastAPI
+│   │   ├── routers/
+│   │   │   └── playlist.py  # Endpoints para procesar playlists
+│   │   └── ...              # Otros módulos
+│   └── requirements.txt     # Dependencias del backend
 │
-├── .venv/
-├── requirements.txt
-└── README.md
+├── frontend/
+│   ├── index.html           # HTML base (con div#root)
+│   ├── src/
+│   │   ├── App.jsx          # Lógica de la interfaz
+│   │   ├── App.css          # Estilos principales
+│   │   ├── main.jsx         # Renderiza React en el root
+│   │   └── services/
+│   │       └── api.js       # Funciones para llamar al backend
+│   └── package.json         # Dependencias del frontend
+│
+└── README.md                # Este archivo
 ```
 
----
+## Backend (FastAPI)
 
-## Modelo de datos actual
+### Requisitos
+- Python 3.10+
+- uvicorn como servidor ASGI  
+- Dependencias del backend:
 
-```python
-from datetime import datetime
-from sqlmodel import SQLModel, Field
-
-class Playlist(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    name: str
-    created: datetime = Field(default_factory=datetime.utcnow)
-    author_id: int
+```bash
+pip install -r requirements.txt
 ```
 
-- Próxima adición: `Song` (relacionada con `Playlist`).
-- Futura entidad: `User` (para asociar playlists a usuarios).
+Ejemplo de requirements.txt:
+```txt
+fastapi
+uvicorn
+yt-dlp
+pydantic
+```
 
----
+### Ejecutar backend
 
-## Estado actual
+Desde la carpeta backend/:
 
-✅ Arranque con `fastapi dev app/main.py`  
-✅ Endpoint `/playlists/` funcionando y consultando BD  
-✅ Base de datos SQLite inicializada con SQLModel  
-⚠ Sin datos de prueba insertados  
-⚠ Autenticación pendiente  
-⚠ CRUD incompleto para playlists  
-⚠ Lógica de manejo de playlists locales y externas no implementada  
+```bash
+uvicorn app.main:app --reload
+```
 
----
+El backend se ejecutará en:  
+http://127.0.0.1:8000
 
-## Pasos recientes
+### Endpoints principales
 
-- Migración de Flask → FastAPI con estructura modular (`routers` + `services`).
-- Sustitución de SQL manual por ORM SQLModel.
-- Estructura mínima de carpetas para escalabilidad.
-- Conexión y consulta inicial con SQLAlchemy/SQLModel.
-- Corrección de error *"no such table"* inicializando la BD antes del arranque.
+- GET `/playlists/parse?url=<playlist_url>`  
+  Procesa una playlist de YouTube y devuelve las canciones.  
 
----
+  Ejemplo respuesta:
+  ```json
+  {
+    "songs": [
+      {
+        "title": "Canción 1",
+        "url": "https://youtube.com/...",
+        "artist": null,
+        "album": null
+      },
+      {
+        "title": "Canción 2",
+        "url": "https://youtube.com/..."
+      }
+    ]
+  }
+  ```
 
-## Próximos pasos
+- POST `/playlists/download`  
+  Recibe una lista de URLs de canciones seleccionadas y genera un ZIP descargable.  
 
-1. Añadir CRUD completo de playlists (GET, POST, PUT, DELETE).
-2. Insertar datos de prueba para validar endpoints.
-3. Implementar `local_playlists.py` para:
-   - Escanear carpetas locales como playlists.
-   - Listar canciones en cada playlist.
-   - Mover canciones entre playlists.
-   - Registrar cambios para revertir operaciones.
-4. Diseñar integración inicial con SoundCloud.
-5. Migrar autenticación a FastAPI con JWT/OAuth2.
-6. Preparar API para React + Vite cuando el backend sea estable.
+## Frontend (React + Vite)
 
----
+### Requisitos
+- Node.js 18+
+- npm o yarn
 
-## Consideraciones técnicas
+### Ejecutar frontend
 
-- **Entorno virtual:** usar `.venv` por proyecto para aislar dependencias.
-- **Base de datos:** SQLite para prototipos, posible migración a PostgreSQL.
-- **Ejecución:** `fastapi dev` para aprovechar *autoreload*.
-- **Modelado:** SQLModel combina Pydantic + SQLAlchemy.
-- **Frontend:** previsto, pero no prioritario.
+Desde la carpeta frontend/:
 
----
+```bash
+npm install
+npm run dev
+```
 
-## Peculiaridades de implementación
+El frontend se ejecutará en:  
+http://127.0.0.1:5173
 
-- **Migración de Flask a FastAPI:**  
-  Estructura modular adaptada de *Blueprints* a *routers*.
-- **Objetivo mixto local/online:**  
-  Gestión de playlists tanto en BD como en sistema de archivos.
-- **Servicios externos:**  
-  Integraciones previstas con SoundCloud y Spotify.
-- **Diseño modular:**  
-  `services/` para lógica de negocio, `routers/` para endpoints.
-- **Persistencia híbrida:**  
-  Playlists en BD, música en sistema de archivos o API externa.
-- **Ejecución en desarrollo:**  
-  Imports corregidos asegurando `__init__.py` en `app/`.
+### Funcionalidades
 
----
+- Introducir la URL de una playlist de YouTube.  
+- Ver la lista de canciones (solo títulos).  
+- Seleccionar canciones con checkboxes.  
+- Descargar seleccionadas en un ZIP.  
 
-## Avances recientes
-- Conversión completa de Flask → FastAPI con routers.
-- BD inicializada automáticamente en `init_db()`.
-- Uso de `routers/playlist.py` para rutas de playlists.
-- Preparación de `routers/sync.py` para sincronizar música local/remota.
-- Diseño para aceptar ruta personalizada en POST `/sync`.
-- Plan de análisis superficial con `mutagen` y profundo con Essentia.
-- Futuro soporte para procesamiento concurrente con Celery o RQ.
+## Comunicación frontend-backend
 
----
-
-## Próximos pasos inmediatos
-1. Crear `config.py` con `DEFAULT_MUSIC_PATH`.
-2. Implementar `sync_service.py` para análisis y registro en BD.
-3. Añadir `routers/sync.py` con endpoint POST `/sync`.
-4. Probar análisis superficial con `mutagen`.
-5. Planificar integración con Celery/RQ.
-
-
-
-# .\.venv\Scripts\activate
-# uvicorn app.main:app
-
-# Working: "curl --location '/playlists/parse?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DW-UepwIyHfc%26list%3DPLR-pSqh8ddm3FQM_eMiCfXqTwDK8qLRMt%26pp%3DgAQB'"
-# Not working: "curl --location 'http://127.0.0.1:8000/playlists/parse?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DW-UepwIyHfc%26list%3DPLR-pSqh8ddm3FQM_eMiCfXqTwDK8qLRMt%26pp%3DgAQB'"
+- El frontend hace peticiones HTTP al backend FastAPI.  
+- El backend debe estar corriendo en `http://127.0.0.1:8000`.  
+- CORS está habilitado para permitir que el frontend (http://127.0.0.1:5173) consuma la API sin problemas.  
