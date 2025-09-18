@@ -1,97 +1,154 @@
-/* Hace que toda la app ocupe toda la pantalla y se centre */
-.app {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* centra vertical */
-  align-items: center;     /* centra horizontal */
-  min-height: 100vh;       /* ocupa toda la altura de la ventana */
-  background-color: #f5f5f5;
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
   font-family: Arial, sans-serif;
-  padding: 1rem;
-  box-sizing: border-box;
 }
 
-/* Título */
-.app h1 {
-  margin-bottom: 1.5rem;
-  color: #333;
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.content {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
   text-align: center;
 }
 
-/* Formulario */
-form {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  width: 100%;
-  max-width: 600px;
-}
-
-form input[type="text"] {
-  flex: 1;
-  padding: 0.5rem;
-  font-size: 1rem;
+.content input[type="text"] {
+  padding: 10px;
+  width: 70%;
+  border-radius: 5px 0 0 5px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  outline: none;
+  font-size: 16px;
 }
 
-form button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+.content button {
+  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
-  background-color: #444;
+  border-radius: 0 5px 5px 0;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 16px;
 }
 
-form button:hover {
-  background-color: #222;
+.content button:hover {
+  background-color: #0056b3;
 }
 
-/* Lista de canciones */
-ul {
+.playlist-container {
+  margin: 30px auto 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 600px;
+  width: 90%;
+}
+
+.playlist-container ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 100%;
-  max-width: 600px;
 }
 
-/* Cada canción */
+.playlist-container li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e0e0e0;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.playlist-container li:hover {
+  background-color: #d5d5d5;
+}
+
+.playlist-container li input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.song-list {
+  max-height: 500px; 
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 1rem;
+}
+
 .song-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
+  background-color: #eee;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
-  background: #eee;
-  border-radius: 6px;
-  color: #333;
-  transition: background-color 0.2s;
 }
 
-.song-item:nth-child(even) {
-  background: #ddd; /* alterna escala de grises */
-}
-
-.song-item:hover {
-  background: #ccc;
-}
-
-/* Botón dentro de cada canción */
-.song-item button {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 4px;
-  background-color: #666;
-  color: white;
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: #333;
   cursor: pointer;
 }
+.circle.selected {
+  background-color: #ebeaea;
+}
 
-.song-item button:hover {
-  background-color: #444;
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #f5f5f5;
+  }
+  .app {
+    background-color: #121212;
+  }
+  .content {
+    background-color: #1e1e1e;
+  }
+  .playlist-container {
+    background-color: #1f1f1f;
+  }
+  .playlist-container li {
+    background-color: #2a2a2a;
+    color: #eee;
+  }
+  .playlist-container li:hover {
+    background-color: #3a3a3a;
+  }
+  .song-item {
+    background-color: #2a2a2a;
+    color: #eee;
+  }
+  .song-item:hover {
+    background-color: #3a3a3a;
+  }
+  .content input[type="text"], .content button {
+    background-color: #333;
+    color: #eee;
+    border-color: #555;
+  }
+  .content button:hover {
+    background-color: #555;
+  }
+  .circle {
+    border-color: #555;
+  }
+  .circle.selected {
+    background-color: #999;
+  }
 }

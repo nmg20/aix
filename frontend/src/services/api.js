@@ -6,11 +6,11 @@ export const parsePlaylist = async (url) => {
   const response = await axios.get(`${API_URL}/playlists/parse`, {
     params: { url }
   });
-  return response;
+  return response.data;
 };
 
 
 export const downloadFromPlaylist = async (urls) => {
   const response = await axios.post(`${API_URL}/playlists/download`, { urls });
-  return response.data;
+  return response;
 };
