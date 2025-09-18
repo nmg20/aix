@@ -2,13 +2,27 @@ from yt_dlp import YoutubeDL # type: ignore
 from urllib.parse import urlparse, parse_qs
 from typing import List, Dict, Any
 from app.models import Song
+from pathlib import Path
+Path("./downloads").mkdir(exist_ok=True)
 
 ydl_opts = {
     "extract_flat": True,
     "quiet": True,
-    "force_generic_extractor": True,
     "ignoreerrors": True
 }
+
+ydl_opts_download = {
+    "format": "bestaudio/best",
+    "outtmpl": "downloads/%(title)s.%(ext)s",
+    "quiet": False,
+    "ignoreerrors": True,
+    "postprocessors": [{
+        "key": "FFmpegExtractAudio",
+        "preferredcodec": "mp3",
+        "preferredquality": "320"
+    }]
+}
+
 
 def normalize_url(url: str) -> str:
     parsed = urlparse(url)
@@ -22,7 +36,7 @@ def parse_playlist(url: str) -> List[Song]:
     """
     Analiza la playlist de YouTube y devuelve una lista de Songs.
     """
-    with YoutubeDL(ydl_opts) as ydl:
+    with YoutubeDL(ydl_opts) as ydl: # type: ignore
         info = ydl.extract_info(normalize_url(url), download=False)
         entries = info.get("entries", [])
         songs: List[Song] = []
@@ -36,11 +50,11 @@ def parse_playlist(url: str) -> List[Song]:
             songs.append(song)
         return songs
 
-def download_songs(urls: List[str], output_dir="."):
+def download_songs(urls: list[str], output_dir="./downloads"):
     """
     Descarga canciones de YouTube.
     """
-    opts = ydl_opts.copy()
-    # opts.update({"outtmpl": f"{output_dir}/%(title)s.%(ext)s"})
-    with YoutubeDL(opts) as ydl:
+    print("Descargando canciones a:", output_dir)
+    with YoutubeDL(ydl_opts_download) as ydl: # type: ignore
         ydl.download(urls)
+    print("Descarga completada")
