@@ -23,7 +23,6 @@ ydl_opts_download = {
     }]
 }
 
-
 def normalize_url(url: str) -> str:
     parsed = urlparse(url)
     query = parse_qs(parsed.query)

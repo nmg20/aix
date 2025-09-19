@@ -97,6 +97,40 @@ body, html, #root {
   margin-bottom: 0.5rem;
 }
 
+.song-pages {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 15px 0;
+  font-size: 18px;
+  user-select: none;
+}
+
+.song-pages .page-number,
+.song-pages .page-arrow {
+  cursor: pointer;
+  color: white;
+  transition: color 0.2s;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.song-pages .page-number:hover,
+.song-pages .page-arrow:hover {
+  color: #8ba6ff; /* azul al pasar el ratón */
+  font-weight: bold;
+}
+
+.song-pages .page-number.active {
+  font-weight: bolder;
+  color: #8ba6ff; /* azul fuerte */
+}
+
+.song-pages .disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
 .circle {
   width: 20px;
   height: 20px;

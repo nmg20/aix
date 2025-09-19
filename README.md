@@ -117,3 +117,7 @@ http://127.0.0.1:5173
 - El frontend hace peticiones HTTP al backend FastAPI.  
 - El backend debe estar corriendo en `http://127.0.0.1:8000`.  
 - CORS está habilitado para permitir que el frontend (http://127.0.0.1:5173) consuma la API sin problemas.  
+
+# Compilación y distribución
+## npm run build -> /dist
+## pyinstaller --onefile --add-data "frontend/dist;frontend/dist" app/main.py    

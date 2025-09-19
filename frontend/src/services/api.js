@@ -2,10 +2,14 @@ import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8000";
 
-export const parsePlaylist = async (url) => {
-  const response = await axios.get(`${API_URL}/playlists/parse`, {
-    params: { url }
-  });
+export const parsePlaylist = async (url, page=1, size=20) => {
+  const response = await axios.get(
+    `${API_URL}/playlists/parse`, {
+      params: { url 
+        , page, size,
+      }
+    }
+  );
   return response.data;
 };
 

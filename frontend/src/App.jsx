@@ -6,10 +6,14 @@ function App() {
   const [url, setUrl] = useState("");
   const [songs, setSongs] = useState([]);
   const [selectedSongs, setSelectedSongs] = useState([]);
+  const [page, setPage] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const handleParse = async () => {
-    const data = await parsePlaylist(url);
-    setSongs(data.songs);
+  const handleParse = async (newPage = 1) => {
+    const data = await parsePlaylist(url, newPage, 20);
+    setSongs(data.items);
+    setPage(newPage);
+    setTotalPages(data.pages);
   };
 
   function toggleSelectSong(songUrl) {
@@ -30,11 +34,10 @@ function App() {
         <input
           type="text"
           value={url}
-          defaultValue={"https://www.youtube.com/watch?v=W-UepwIyHfc&list=PLR-pSqh8ddm3FQM_eMiCfXqTwDK8qLRMt&pp=gAQB"}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="URL de la playlist"
         />
-        <button onClick={handleParse}>Procesar</button>
+        <button onClick={() => handleParse(1)}>Procesar</button>
 
       {songs.length> 0 && (
           <div className="playlist-container">
@@ -48,6 +51,32 @@ function App() {
                   />
                 </div>
               ))}
+            </div>
+            <div className="song-pages">
+              <span className="page-arrow"
+                disabled = {page === 1}
+                onClick = {() => handleParse(page - 1)}>
+                  &lt;
+              </span>
+
+              {[...Array(totalPages)].map((_, i) => {
+                const pageNum = i + 1;
+                return (
+                  <span
+                    key={pageNum}
+                    className={`page-number ${pageNum === page ? "active" : ""}`}
+                    onClick={() => handleParse(pageNum)}
+                  >
+                    {pageNum}
+                  </span>
+                );
+              })}
+
+              <span className="page-arrow"
+                disabled = {page === totalPages}
+                onClick = {() => handleParse(page + 1)}>
+                  &gt;
+              </span>
             </div>
             <button className="download-btn" onClick={handleDownload}>
               Descargar
