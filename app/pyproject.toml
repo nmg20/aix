@@ -3,7 +3,7 @@ name = "aix"
 version = "0.1.0"
 description = "Gestor de playlists"
 authors = [
-    {name = "Nicolás Martínez González",email = "nicogm977@gmail.com"}
+    "Nicolás Martínez González <nicogm977@gmail.com>"
 ]
 readme = "README.md"
 
@@ -15,7 +15,9 @@ sqlalchemy = "^2.0.45"
 alembic = "^1.18.0"
 yt-dlp = "^2025.12.8"
 
-requires-python = ">=3.14"
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,0 +1,14 @@
+version: '1.0'
+services:
+  db:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    restart: always
+    port:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+  volumes:
+    db:
+      driver: local

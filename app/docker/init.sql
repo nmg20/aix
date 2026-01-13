@@ -1,0 +1,7 @@
+CREATE USER aixmin;
+
+CREATE DATABASE playlist:
+GRANT ALL PRIVILEGES ON DATABASE playist to aixmin;
+
+CREATE DATABASE track;
+GRANT ALL PRIVILEGES ON DATABASE track to aixmin;
