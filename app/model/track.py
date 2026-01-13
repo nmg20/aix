@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -8,6 +8,8 @@ class Track(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False, unique=False)
-    artist = Column(String, nullable=False)
+
+    audio_features = relationship("AudioFeature")
+    metadata = relationship("TrackMetadata")
 
     

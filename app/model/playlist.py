@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -10,4 +10,4 @@ class Playlist(Base):
     name = Column(String, nullable=False, unique=False)
     path = Column(String, nullable=False)
 
-    
+    tracks = relationship("Track")
