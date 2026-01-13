@@ -1,14 +1,20 @@
-version: '1.0'
+version: "3.9"
 services:
   db:
     build:
       context: ./docker
       dockerfile: Dockerfile
+    container_name: aix-postgres
     restart: always
-    port:
-      - '5432:5432'
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      # POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - db:/var/lib/postgresql/data
-  volumes:
-    db:
-      driver: local
+
+volumes:
+  db:
+    driver: local
