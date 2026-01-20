@@ -8,10 +8,10 @@ class TrackSource(Base):
 
     id = Column(Integer, primary_key=True)
     track_id = Column(Integer, ForeignKey("tracks.id"))
-    provider = Column(String, nullable=False)
-    path = Column(String, nullable=False)
-    format = Column(String, nullable=True)
-    bitrate = Column(Integer, nullable=True)
+    provider = Column(String(255), nullable=False)
+    path = Column(String(255), nullable=False)
+    format = Column(String(255), nullable=True)
+    bitrate = Column(String(255), nullable=True)
 
     created_at = Column(DateTime(timezone=True), 
         server_default=func.now())

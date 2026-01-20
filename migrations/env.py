@@ -13,7 +13,8 @@ config = context.config
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "mysql+mysqlconnector://aix:aix@127.0.0.1:3306/aix"
+    # "mysql+mysqlconnector://aix:aix@127.0.0.1:3306/aix"
+    "mysql+pymysql://aix:aix@db:3306/aix"
 )
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 

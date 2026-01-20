@@ -7,7 +7,7 @@ class AudioFeature(Base):
 
     id = Column(Integer, primary_key=True)
     bpm = Column(Float, nullable=False)
-    key = Column(String, nullable=False)
+    key = Column(String(255), nullable=False)
 
     # track_id = Column(Integer, ForeignKey("tracks.id"))
     # track = relationship("Track")

@@ -7,7 +7,7 @@ class Track(Base):
     __tablename__="tracks"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False, unique=False)
+    title = Column(String(255), nullable=False, unique=False)
     duration = Column(Float, nullable=False)
 
     created_at = Column(DateTime(timezone=True), 
