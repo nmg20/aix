@@ -3,3 +3,4 @@ uvicorn[standard]
 yt-dlp
 sqlalchemy
 pydantic
+mysql-connector-python

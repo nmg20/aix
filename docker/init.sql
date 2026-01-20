@@ -1,7 +1,0 @@
-CREATE USER aixmin WITH PASSWORD 'aixmin';
-
-CREATE DATABASE playlist;
-GRANT ALL PRIVILEGES ON DATABASE playlist to aixmin;
-
-CREATE DATABASE track;
-GRANT ALL PRIVILEGES ON DATABASE track to aixmin;

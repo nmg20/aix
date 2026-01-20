@@ -1,8 +1,7 @@
+from app.db.base_class import Base
 from sqlalchemy import Column, Integer, String, Float, DateTime
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
-Base = declarative_base()
 
 class Track(Base):
     __tablename__="tracks"
@@ -17,10 +16,14 @@ class Track(Base):
         server_default=func.now(), onupdate=func.now())
 
     sources = relationship("TrackSource",
-        back_populates="track", cascade="all")
-    audio_features = relationship("AudioFeature",
-        back_populates="track", cascade="all")
-    metadata = relationship("TrackMetadata",
-        back_populates="track", cascade="all")
+        back_populates="track", cascade="all, delete-orphan")
+    # audio_features = relationship("AudioFeature",
+    #     back_populates="track", cascade="all")
+    # track_metadata = relationship("TrackMetadata",
+    #     back_populates="track", cascade="all")
+
+    playlist_tracks = relationship("PlaylistTrack",
+        back_populates="track",
+        cascade="all, delete-orphan")
 
     

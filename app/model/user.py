@@ -1,7 +1,6 @@
+from app.db.base_class import Base
 from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.orm import declarative_base, relationship
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__ = "users"
@@ -11,4 +10,4 @@ class User(Base):
     hashed_password = Column(String, nullable=True)
     is_superuser = Column(Boolean, default=False)
 
-    playlists = relationship("Playlist")
+    # playlists = relationship("Playlist")

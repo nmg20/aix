@@ -1,8 +1,7 @@
+from app.db.base_class import Base
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
-Base = declarative_base()
 
 class Playlist(Base):
     __tablename__="playlists"
@@ -17,4 +16,6 @@ class Playlist(Base):
     updated_at = Column(DateTime(timezone=True), 
         server_default=func.now(), onupdate=func.now())
 
-    tracks = relationship("Track")
+    playlist_tracks = relationship("PlaylistTrack",
+        back_populates="playlist",
+        cascade="all, delete-orphan")

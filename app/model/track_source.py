@@ -1,8 +1,7 @@
+from app.db.base_class import Base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
-Base = declarative_base()
 
 class TrackSource(Base):
     __tablename__="track_sources"
@@ -19,4 +18,4 @@ class TrackSource(Base):
     updated_at = Column(DateTime(timezone=True), 
         server_default=func.now(), onupdate=func.now())
     
-    track = relationship("Track", back_populates="sources")
+    track = relationship("Track")
