@@ -3,43 +3,72 @@
 Aplicación simple de gestión de playlists, exportación entre plataformas, descarga, análisis de tracks individuales, búsqueda...
 
 ### Motivación
-Crear un CRUD con FastAPI, SQLAlchemy, Postgres, Docker y demás para aprender más sobre el desarrollo con estas herramientas.
+Crear un CRUD con FastAPI, SQLAlchemy, MySQL, Docker y demás para aprender más sobre el desarrollo con estas herramientas.
 
-### Pasos a seguir
+### Propuesta
+Las funcionalidades principales de la aplicación son las siguientes:
+- Gestión de **usuarios** (conexión con plataformas).
+- CRUD de **playlists** y **tracks**.
+- Almacenamiento de datos locales y remotos (**tracks**, **metadatos**, **información de audio**).
+- Endpoints para **exportar/importar** playlists.
+- Endpoints para **parsear** y **descargar** playlists.
+- Análisis y gestión de **playlists** de manera remota en varias plataformas.
+- Registro y descarga de **playlists**.
+- Indexación de **tracks**.
+- Dockerización completa del stack (app + bd).
+- Módulo frontend sencillo.
 
-#### Modelado inicial de datos - definición de entidades:
-- Playlist
-- Track
-- TrackInfo
-- User
+### Entidades principales
+| Clase     | Descripción |
+|-------------|-------------|
+| `User`      | Representa un usuario del sistema. |
+| `Playlist`  | Conjunto de tracks (locales/remotos). |
+| `Track`     | Pista musical básica. |
+| `TrackInfo` | Metadatos ampliados de una pista (ej. duración, artista, etc.). |
 
-#### Organizar entorno Python
-- Build venv
-- Preparar docker-compose con postgres
-- Instalar dependencias (poetry)
-- Inicializar alembic
-- Preparar configuración de la app (pydantic)
+## Diagrama de clases
+![Diagrama de clases](class_diagram.png)
 
-#### Definir ORM y crear migración de alembic
-- Definir tablas con SQLAlchemy
+### Dependencias
+Este proyecto usa **Poetry** para la gestión de dependencias y entornos virtuales.
 
-#### Definir esquemas con Pydantic
+## Requisitos
+- Python 3.10+
+- Poetry
 
-#### Definir dependencias en FastAPI (Depends(get_db))
+## Instalación de dependencias
+```bash
+poetry install
+poetry shell
+```
 
-#### Implementar CRUD inicial para todas las entidades
-- Create, Read, Update, Delete -> sin seguridad
+## Ejecutar la aplicación
+```bash
+poetry run uvicorn app.main:app --reload
+```
 
-#### Definir tests unitarios
-- pytest
+## Clonar repositorio
+```bash
+git clone https://github.com/nmg20/aix.git
+cd aix
+```
 
-#### Implementar routes y definir mejor el API a exponer
-- parse
-- download
-- import/export
+## Variables de entorno
+```bash
+nano .env.example
+# Editar datos del entorno
+cp .env.example .env
+```
 
-#### Añadir módulo de usuarios
+## Docker
+Iniciar los servicios:
+```bash
+# Esto levantará la bd (en el futuro también el backend completo)
+docker compose up -d
 
-#### Añadir autenticación con JWT
+# Comprobar que está corriendo
+docker ps
 
-#### Mejorar docker-compose
+# Ver logs por si falla algo
+docker compose logs -f
+```
