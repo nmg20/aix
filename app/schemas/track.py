@@ -3,10 +3,14 @@ import datetime
 
 class TrackBase(BaseModel):
     title: str
-    duration: int
+    duration: float
 
 class TrackCreate(TrackBase):
     pass
+
+class TrackUpdate(BaseModel):
+    title: str | None = None
+    duration: float | None = None
 
 class TrackInDB(TrackBase):
     id: int
@@ -14,4 +18,4 @@ class TrackInDB(TrackBase):
     updated_at: datetime.datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

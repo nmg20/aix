@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from app.api.routes.track import router as track_router
+from app.api.main import api_router
 
 app = FastAPI()
 
-app.include_router(track_router, prefix="/tracks", tags=["track"])
+app.include_router(api_router)
 
 @app.get('/')
 def root():
