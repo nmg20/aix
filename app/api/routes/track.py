@@ -1,13 +1,13 @@
 from app.db.db import get_db
 from app.model import Track
 from app.crud.track import track_crud as crud
-from app.schema.track import TrackInDB, TrackCreate, TrackUpdate
+from app.schema.track import TrackRead, TrackCreate, TrackUpdate
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/tracks", tags=["tracks"])
 
-@router.get("/", response_model=list[TrackInDB],
+@router.get("/", response_model=list[TrackRead],
     status_code=status.HTTP_200_OK)
 def fetch_all_tracks(db: Session = Depends(get_db)):
     """
@@ -19,12 +19,12 @@ def fetch_all_tracks(db: Session = Depends(get_db)):
         db (Session): La sesión de la bd
     
     Returns:
-        list[TrackInDB]: Lista con la representación de los tracks en la bd.
+        list[TrackRead]: Lista con la representación de los tracks en la bd.
     """
     tracks = crud.get_many(db)
     return tracks
 
-@router.get("/{track_id}", response_model=TrackInDB,
+@router.get("/{track_id}", response_model=TrackRead,
     status_code=status.HTTP_200_OK)
 def fetch_track_by_id(track_id: int, db: Session = Depends(get_db)):
     """
@@ -35,7 +35,7 @@ def fetch_track_by_id(track_id: int, db: Session = Depends(get_db)):
         db (Session): La sesión de la bd
     
     Returns:
-        TrackInDB: Track con el id en la bd.
+        TrackRead: Track con el id en la bd.
     """
     track = crud.get_one(db, id=track_id)
     if track is None:
@@ -45,7 +45,7 @@ def fetch_track_by_id(track_id: int, db: Session = Depends(get_db)):
         )
     return track
 
-@router.get("/title/{title}", response_model=TrackInDB,
+@router.get("/title/{title}", response_model=TrackRead,
     status_code=status.HTTP_200_OK)
 def fetch_track_by_title(track_title: str, 
     db: Session = Depends(get_db)):
@@ -57,7 +57,7 @@ def fetch_track_by_title(track_title: str,
         db (Session): La sesión de la bd
     
     Returns:
-        TrackInDB: Track con el id en la bd.
+        TrackRead: Track con el id en la bd.
     """
     track = crud.get_one(db, title=track_title)
     if track is None:
@@ -67,7 +67,7 @@ def fetch_track_by_title(track_title: str,
         )
     return track
 
-@router.post("/", response_model=TrackInDB, 
+@router.post("/", response_model=TrackRead, 
     status_code=status.HTTP_201_CREATED)
 def create_track(track: TrackCreate, 
         db: Session = Depends(get_db)):
@@ -79,12 +79,12 @@ def create_track(track: TrackCreate,
         db (Session): La sesión de la bd
     
     Returns:
-        TrackInDB: Track en la bd.
+        TrackRead: Track en la bd.
     """
     created_track = crud.create(db, track)
     return created_track
 
-@router.put("/{track_id}", response_model=TrackInDB, 
+@router.put("/{track_id}", response_model=TrackRead, 
     status_code=status.HTTP_200_OK)
 def update_track(track_id: int,
         track_update: TrackUpdate,
@@ -98,7 +98,7 @@ def update_track(track_id: int,
         db (Session): La sesión de la bd
     
     Returns:
-        TrackInDB: Track en la bd.
+        TrackRead: Track en la bd.
     """
     track = crud.get_one(db, Track.id == track_id)
     if track is None:
@@ -121,7 +121,7 @@ def delete_track(track_id: int,
         db (Session): La sesión de la bd
     
     Returns:
-        TrackInDB: Información del track borrado.
+        TrackRead: Información del track borrado.
     """
     track = crud.get_one(db, Track.id == track_id)
     if track is None:

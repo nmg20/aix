@@ -15,8 +15,10 @@ class PlaylistTrack(Base):
         ForeignKey("tracks.id", ondelete="cascade"),
         nullable=False)
     
-    created_at = Column(DateTime(timezone=True),
-        server_default=func.now())
+    position = Column(Integer, nullable=False)
+    
+    # created_at = Column(DateTime(timezone=True),
+    #     server_default=func.now())
     
     playlist = relationship("Playlist", 
         back_populates="playlist_tracks")
@@ -26,3 +28,8 @@ class PlaylistTrack(Base):
     __table_args__ = (
         UniqueConstraint("playlist_id", "track_id", name="uq_playlist_track"),
     )
+
+    def __init__(self, playlist_id: int, track_id: int, position: int):
+        self.playlist_id = playlist_id
+        self.track_id = track_id
+        self.position = position

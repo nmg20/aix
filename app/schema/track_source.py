@@ -14,7 +14,7 @@ class TrackSourceCreate(TrackSourceBase):
 class TrackSourceUpdate(BaseModel):
     pass
 
-class TrackSourceInDB(TrackSourceBase):
+class TrackSourceRead(TrackSourceBase):
     id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime

@@ -1,10 +1,8 @@
 from app.model.track import Track
 from app.model.track_source import TrackSource
 from app.schema.track import TrackCreate, TrackUpdate
-from app.schema.track_source import TrackSourceCreate
 from app.crud.base_crud import CrudRepository
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 
 class TrackCrud(CrudRepository):
     def __init__(self) -> None:

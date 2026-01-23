@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from app.schema.track_source import TrackSourceCreate, TrackSourceInDB
+from app.schema.track_source import TrackSourceCreate, TrackSourceRead
 import datetime
 from typing import List
 
@@ -14,9 +14,9 @@ class TrackUpdate(BaseModel):
     title: str | None = None
     duration: float | None = None
 
-class TrackInDB(TrackBase):
+class TrackRead(TrackBase):
     id: int
-    sources: List[TrackSourceInDB] | None = None
+    sources: List[TrackSourceRead] | None = None
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
