@@ -1,12 +1,14 @@
 from pydantic import BaseModel, Field
+from app.schema.track_source import TrackSourceCreate, TrackSourceInDB
 import datetime
+from typing import List
 
 class TrackBase(BaseModel):
     title: str
     duration: float
 
 class TrackCreate(TrackBase):
-    pass
+    sources: list[TrackSourceCreate] | None = None
 
 class TrackUpdate(BaseModel):
     title: str | None = None
@@ -14,6 +16,7 @@ class TrackUpdate(BaseModel):
 
 class TrackInDB(TrackBase):
     id: int
+    sources: List[TrackSourceInDB] | None = None
     created_at: datetime.datetime
     updated_at: datetime.datetime
 

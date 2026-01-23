@@ -1,7 +1,7 @@
 from app.db.db import get_db
 from app.model import Track
 from app.crud.track import track_crud as crud
-from app.schemas.track import TrackInDB, TrackCreate, TrackUpdate
+from app.schema.track import TrackInDB, TrackCreate, TrackUpdate
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.orm import Session
 

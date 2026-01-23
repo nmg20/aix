@@ -16,7 +16,8 @@ class Track(Base):
         server_default=func.now(), onupdate=func.now())
 
     sources = relationship("TrackSource",
-        back_populates="track", cascade="all, delete-orphan")
+        back_populates="track",
+        cascade="all, delete-orphan")
     # audio_features = relationship("AudioFeature",
     #     back_populates="track", cascade="all")
     # track_metadata = relationship("TrackMetadata",
