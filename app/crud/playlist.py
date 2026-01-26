@@ -1,5 +1,7 @@
 from app.model.playlist import Playlist
 from app.model.playlist_track import PlaylistTrack
+from app.schema.playlist import PlaylistParse, PlaylistParseResult
+from app.schema.track import TrackUpdate, TrackRead
 from app.crud.base_crud import CrudRepository
 from sqlalchemy.orm import Session
 from typing import List
@@ -14,6 +16,8 @@ class PlaylistCrud(CrudRepository):
         """
         super().__init__(model=Playlist)
     
+    # Expanded basic playlist CRUD
+
     def add_track(self, db: Session, 
             playlist_id: int, track_id: int) -> PlaylistTrack | None:
         """
@@ -29,6 +33,19 @@ class PlaylistCrud(CrudRepository):
         db.refresh(playlist)
         return playlist_track
     
+    def get_tracks(self, db: Session, playlist_id: int) -> List[PlaylistTrack]:
+        """
+        """
+        playlist = super().get_one(Playlist.id == playlist_id)
+        if playlist is None:
+            return []
+        return sorted(playlist.playlist_tracks, key=lambda pt: pt.position)
+
+    def update_track(self, db: Session, playlist_id: int, track_data: TrackUpdate) -> TrackRead | None:
+        """
+        """
+        pass
+
     def remove_track(self, db: Session, 
             playlist_id: int, track_id: int) -> PlaylistTrack | None:
         """
@@ -44,13 +61,12 @@ class PlaylistCrud(CrudRepository):
         db.commit()
         db.refresh(playlist)
     
-    def get_tracks(self, db: Session, playlist_id: int) -> List[PlaylistTrack]:
-        """
-        """
-        playlist = super().get_one(Playlist.id == playlist_id)
-        if playlist is None:
-            return []
-        return sorted(playlist.playlist_tracks, key=lambda pt: pt.position)
+    # Playlist processing functions 
 
+    def parse(self, db: Session, playlist_data: PlaylistParse) -> PlaylistParseResult | None:
+        pass
+
+    def download(self, db: Session, parsed_playlist: PlaylistParseResult):
+        pass
 
 playlist_crud = PlaylistCrud()
