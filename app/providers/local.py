@@ -20,6 +20,7 @@ class LocalProvider(PlaylistProvider):
         En base a la ruta de una carpeta devuelve los datos de los
         tracks en esa playlist.
         """
+        print(f"[PROVIDER]Parsing playlist: {path}.\n")
         files = self.scan_folder(path)
         tracks: List[ParsedTrack] = []
 
@@ -32,23 +33,28 @@ class LocalProvider(PlaylistProvider):
             tracks=tracks
         )
 
-
     def scan_folder(self, path: str) -> List[str]:
         """
         Devuelve los archivos en path que coincidan con los formatos
         de audio admitidos.
         """
+        if not os.path.isdir(path):
+            raise ValueError(f"Path is not a directory: {path}")
+
         return [
             os.path.join(path, f)
             for f in os.listdir(path)
             if f.lower().endswith(self.supported_formats)
         ]
     
+        # print(f"\tScanning file {f}\n")
+    
     def read_metadata(self, file_path: str) -> ParsedTrack:
         """
         Lee metadatos de un track con mutagen teniendo en cuenta 
         el formato del archivo.
         """
+        print(f"\tReading {file_path} metadata.\n")
         metadata: AudioMetadata = self.analyzer.analyze(file_path)
         return ParsedTrack(
             title=metadata.title if metadata.title else file_path,
@@ -60,3 +66,6 @@ class LocalProvider(PlaylistProvider):
             bpm=metadata.bpm,
             key=metadata.key,            
         )
+    
+    def download_playlist(self, tracks: List[ParsedTrack]) -> None:
+        pass

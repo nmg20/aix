@@ -29,22 +29,28 @@ class AudioAnalyzer:
                 continue
             value = audio.tags.get(key)
             if value:
-                return value[0] if isinstance(value, list) else value
+                val = value[0] if isinstance(value, list) else value
+                if hasattr(val, "text"):
+                    val = val.text[0] if val.text else None
+                return str(val)
         return None
     
     def analyze(self, file_path: str) -> AudioMetadata:
-        """
-        """
         audio = AudioFile(file_path)
         if not audio:
             return AudioMetadata()
-        
+        bpm_value = self.read_tag(audio, self.aliases["bpm"])
+        try:
+            bpm = float(bpm_value) if bpm_value else 0
+        except (ValueError, TypeError):
+            bpm = 0
         return AudioMetadata(
             title=self.read_tag(audio, self.aliases["title"]),
-            artist=self.read_tag(audio, self.aliases["artis"]),
+            artist=self.read_tag(audio, self.aliases["artist"]),
             album=self.read_tag(audio, self.aliases["album"]),
             duration=getattr(audio.info, "length", None),
-            bpm=float(self.read_tag(audio, self.aliases["bpm"]) or 0),
+            bpm=bpm,
             key=self.read_tag(audio, self.aliases["key"]),
         )
+
     

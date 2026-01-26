@@ -5,6 +5,7 @@ from app.schema.track import TrackUpdate, TrackRead
 from app.crud.base_crud import CrudRepository
 from sqlalchemy.orm import Session
 from typing import List
+from app.providers import providers_registry
 
 class PlaylistCrud(CrudRepository):
     """
@@ -15,6 +16,7 @@ class PlaylistCrud(CrudRepository):
         Inicializa el CRUD como un CRUDRepository del modelo Playlist
         """
         super().__init__(model=Playlist)
+        self.providers = providers_registry
     
     # Expanded basic playlist CRUD
 
@@ -63,10 +65,16 @@ class PlaylistCrud(CrudRepository):
     
     # Playlist processing functions 
 
-    def parse(self, db: Session, playlist_data: PlaylistParse) -> PlaylistParseResult | None:
-        pass
+    def parse(self, playlist_data: PlaylistParse) -> PlaylistParseResult:
+        """
+        """
+        print(f"[CRUD]Parsing playlist: {playlist_data.path} on {playlist_data.provider}.\n")
+        provider = self.providers.get(playlist_data.provider)
+        return provider.parse_playlist(playlist_data.path)
 
     def download(self, db: Session, parsed_playlist: PlaylistParseResult):
+        """
+        """
         pass
 
 playlist_crud = PlaylistCrud()
