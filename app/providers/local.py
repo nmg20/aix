@@ -9,7 +9,6 @@ class LocalProvider(PlaylistProvider):
     """
     Procesador de tracks en forma de archivos locales en carpetas.
     """
-
     def __init__(self):
         super().__init__("local")
         self.supported_formats = (".mp3",".wav",".flac")
@@ -19,6 +18,12 @@ class LocalProvider(PlaylistProvider):
         """
         En base a la ruta de una carpeta devuelve los datos de los
         tracks en esa playlist.
+
+        Args:
+            - path (str): Ruta a la carpeta local
+        Return:
+            - PlaylistParseResult: Provider + path de la playlist 
+                + lista de tracks procesados
         """
         print(f"[PROVIDER]Parsing playlist: {path}.\n")
         files = self.scan_folder(path)
@@ -37,6 +42,11 @@ class LocalProvider(PlaylistProvider):
         """
         Devuelve los archivos en path que coincidan con los formatos
         de audio admitidos.
+
+        Args:
+            - path: Ruta a la carpeta
+        Return:
+            - Lista de paths de los archivos en la carpeta
         """
         if not os.path.isdir(path):
             raise ValueError(f"Path is not a directory: {path}")
@@ -47,12 +57,16 @@ class LocalProvider(PlaylistProvider):
             if f.lower().endswith(self.supported_formats)
         ]
     
-        # print(f"\tScanning file {f}\n")
-    
     def read_metadata(self, file_path: str) -> ParsedTrack:
         """
         Lee metadatos de un track con mutagen teniendo en cuenta 
         el formato del archivo.
+
+        Args:
+            - file_path (str): Ruta absolutaal archivo de audio
+        Return:
+            - ParsedTrack: Clase con metadatos rellenados después de 
+            parsear un track
         """
         print(f"\tReading {file_path} metadata.\n")
         metadata: AudioMetadata = self.analyzer.analyze(file_path)
@@ -68,4 +82,7 @@ class LocalProvider(PlaylistProvider):
         )
     
     def download_playlist(self, tracks: List[ParsedTrack]) -> None:
+        """
+        No soportada porque los tracks de esta playlist ya están descargados.
+        """
         pass

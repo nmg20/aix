@@ -12,6 +12,10 @@ class AudioMetadata:
     key: str | None = None
 
 class AudioAnalyzer:
+    """
+    Clase para leer con mutagen metadatos de un archivo de audio.
+    TODO: ampliar aliases de los posibles tags a leer con mutagen.
+    """
     def __init__(self):
         self.aliases = {
             "title": ["TIT1", "TIT2", "title", "INAM"],
@@ -23,6 +27,14 @@ class AudioAnalyzer:
 
     def read_tag(self, audio: AudioFile, aliases: list) -> str | None:
         """
+        En base a un AudioFile de mutagen extrae datos de un tag según
+        sus posibles alias.
+
+        Args:
+            - audio (AudioFile): Objeto File de mutagen leído del fichero de audio a procesar
+            - aliases (list): lista de posibles representaciones de un tag
+        Return:
+            - Valor como string del tag leído
         """
         for key in aliases:
             if audio.tags is None:
@@ -36,6 +48,15 @@ class AudioAnalyzer:
         return None
     
     def analyze(self, file_path: str) -> AudioMetadata:
+        """
+        Dada una ruta a un archivo de audio, lo procesa con mutagen
+        y guarda la información en la dataclass AudioMetadata.
+        
+        Args:
+            - file_path (str): Ruta completa al archivo de audio.
+        Return:
+            - AudioMetadata: dataclass con los metadatos leídos.
+        """
         audio = AudioFile(file_path)
         if not audio:
             return AudioMetadata()
